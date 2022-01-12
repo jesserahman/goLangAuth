@@ -1,7 +1,8 @@
 package app
 
 import (
-	"fmt"
+	"encoding/json"
+	"goLangAuth/dto"
 	"goLangAuth/service"
 	"net/http"
 )
@@ -10,6 +11,24 @@ type AuthHandler struct {
 	service service.AuthService
 }
 
+// handleLogin will verify that the username and password matches the DB
 func (handler *AuthHandler) handleLogin(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello world")
+	var request dto.NewAuthRequest
+	err := json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		writeResponse(w, http.StatusBadRequest, err.Error())
+	} else {
+		err := handler.service.VerifyCredentials(request)
+		if err != nil {
+			writeResponse(w, http.StatusUnauthorized, err)
+		}
+	}
+}
+
+func writeResponse(w http.ResponseWriter, code int, data interface{}) {
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(code)
+	if err := json.NewEncoder(w).Encode(data); err != nil {
+		panic(err)
+	}
 }

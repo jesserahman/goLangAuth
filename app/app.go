@@ -13,6 +13,8 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func sanityCheck() {
@@ -32,7 +34,7 @@ func Run() {
 	authHandler := AuthHandler{service.NewAuthService(domain.NewAuthRepositoryDbConnection(dbClient))}
 
 	router := mux2.NewRouter()
-	router.HandleFunc("/login", authHandler.handleLogin).Methods(http.MethodGet)
+	router.HandleFunc("/login", authHandler.handleLogin).Methods(http.MethodPost)
 
 	address := os.Getenv("SERVER_ADDRESS")
 	port := os.Getenv("SERVER_PORT")
