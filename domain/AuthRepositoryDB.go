@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"goLangAuth/dto"
@@ -15,14 +16,19 @@ type AuthRepositoryDb struct {
 func (a AuthRepositoryDb) CheckCredentials(request dto.NewAuthRequest) *errs.AppError {
 	var authQuery = fmt.Sprintf("select * from users u where username = '%s' AND password = '%s'", request.Username, request.Password)
 
-	var result string
-	err := a.dbClient.Select(&result, authQuery)
-	if err != nil {
+	var resultUser User
+	err := a.dbClient.Get(&resultUser, authQuery)
+	if err != nil && err != sql.ErrNoRows {
 		logger.Error("Error querying Accounts table " + err.Error())
 		return errs.NewUnexpectedError("unexpected db error")
 	}
 
-	fmt.Println("result is ", result)
+	if err == sql.ErrNoRows {
+		logger.Error("Error querying Accounts table " + err.Error())
+		return errs.NewNotFoundError("username and password not found")
+	}
+
+	fmt.Println("result is ", resultUser)
 
 	return nil
 }
