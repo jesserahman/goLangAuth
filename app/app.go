@@ -32,9 +32,11 @@ func Run() {
 	dbClient := getDbClient()
 
 	authHandler := AuthHandler{service.NewAuthService(domain.NewAuthRepositoryDbConnection(dbClient))}
+	registerHandler := RegisterHandler{service.NewRegisterService(domain.NewRegisterRepositoryDbConnection(dbClient))}
 
 	router := mux2.NewRouter()
 	router.HandleFunc("/login", authHandler.handleLogin).Methods(http.MethodPost)
+	router.HandleFunc("/register", registerHandler.handleRegister).Methods(http.MethodPost)
 
 	address := os.Getenv("SERVER_ADDRESS")
 	port := os.Getenv("SERVER_PORT")
