@@ -13,5 +13,5 @@ type User struct {
 	CreatedOn  string `db:"created_on"`
 }
 type AuthRepository interface {
-	CheckCredentials(dto.NewAuthRequest) *errs.AppError
+	CheckCredentials(dto.NewAuthRequest) (*User, *errs.AppError)
 }

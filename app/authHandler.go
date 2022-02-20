@@ -18,9 +18,11 @@ func (handler *AuthHandler) handleLogin(w http.ResponseWriter, r *http.Request) 
 	if err != nil {
 		writeResponse(w, http.StatusBadRequest, err.Error())
 	} else {
-		err := handler.service.VerifyCredentials(request)
+		signedTokenAsString, err := handler.service.VerifyCredentials(request)
 		if err != nil {
 			writeResponse(w, http.StatusUnauthorized, err)
+		} else {
+			writeResponse(w, http.StatusOK, signedTokenAsString)
 		}
 	}
 }

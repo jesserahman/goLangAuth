@@ -35,7 +35,7 @@ func Run() {
 	registerHandler := RegisterHandler{service.NewRegisterService(domain.NewRegisterRepositoryDbConnection(dbClient))}
 
 	router := mux2.NewRouter()
-	router.HandleFunc("/login", authHandler.handleLogin).Methods(http.MethodPost)
+	router.HandleFunc("/auth/login", authHandler.handleLogin).Methods(http.MethodPost)
 	router.HandleFunc("/register", registerHandler.handleRegister).Methods(http.MethodPost)
 
 	address := os.Getenv("SERVER_ADDRESS")
