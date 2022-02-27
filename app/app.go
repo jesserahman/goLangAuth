@@ -36,6 +36,7 @@ func Run() {
 
 	router := mux2.NewRouter()
 	router.HandleFunc("/auth/login", authHandler.handleLogin).Methods(http.MethodPost)
+	router.HandleFunc("/auth/verify", authHandler.handleVerify).Methods(http.MethodGet)
 	router.HandleFunc("/register", registerHandler.handleRegister).Methods(http.MethodPost)
 
 	address := os.Getenv("SERVER_ADDRESS")

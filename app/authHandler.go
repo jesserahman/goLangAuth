@@ -27,6 +27,41 @@ func (handler *AuthHandler) handleLogin(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+// handleLogin will verify that the token is valid
+func (handler *AuthHandler) handleVerify(w http.ResponseWriter, r *http.Request) {
+	urlParams := make(map[string]string)
+
+	for k, _ := range r.URL.Query() {
+		urlParams[k] = r.URL.Query().Get(k)
+	}
+
+	if urlParams["token"] != "" {
+		isAuthorized, appError := handler.service.VerifyToken(urlParams)
+		if appError != nil {
+			writeResponse(w, http.StatusForbidden, notAuthorizedResponse("verify token error"))
+		} else {
+			if isAuthorized {
+				writeResponse(w, http.StatusOK, authorizedResponse())
+			} else {
+				writeResponse(w, http.StatusForbidden, notAuthorizedResponse("unauthorized"))
+			}
+		}
+	} else {
+		writeResponse(w, http.StatusForbidden, notAuthorizedResponse("missing token"))
+	}
+}
+
+func notAuthorizedResponse(msg string) map[string]interface{} {
+	return map[string]interface{}{
+		"isAuthorized": false,
+		"message":      msg,
+	}
+}
+
+func authorizedResponse() map[string]bool {
+	return map[string]bool{"isAuthorized": true}
+}
+
 func writeResponse(w http.ResponseWriter, code int, data interface{}) {
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(code)
