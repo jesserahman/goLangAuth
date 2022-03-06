@@ -2,12 +2,13 @@ package service
 
 import (
 	"fmt"
-	"github.com/golang-jwt/jwt"
 	"goLangAuth/domain"
 	"goLangAuth/dto"
 	"goLangAuth/errs"
 	"log"
 	"os"
+
+	"github.com/golang-jwt/jwt"
 )
 
 type AuthService interface {
@@ -16,7 +17,8 @@ type AuthService interface {
 }
 
 type AuthServiceImpl struct {
-	repository domain.AuthRepository
+	repository      domain.AuthRepository
+	rolePermissions domain.RolePermissions
 }
 
 func (service AuthServiceImpl) VerifyCredentials(request dto.NewAuthRequest) (*string, *errs.AppError) {
@@ -47,8 +49,11 @@ func (service AuthServiceImpl) VerifyToken(urlParams map[string]string) (bool, e
 	if jwtToken, err := jwtTokenFromString(urlParams["token"]); err != nil {
 		return false, err
 	} else {
+
 		//	check the validity of the token: expiration time & signature
 		if jwtToken.Valid {
+
+			// get mapClaims from JWT token
 			mapClaims := jwtToken.Claims.(jwt.MapClaims)
 
 			// convert map to Claim struct - Claims contains all the user info that was sent in the token
@@ -58,12 +63,24 @@ func (service AuthServiceImpl) VerifyToken(urlParams map[string]string) (bool, e
 				return false, err
 			}
 
-			if urlParams["customer_id"] == userClaims.CustomerId {
-				return true, nil
-			} else {
-				userUnauthorizedError := fmt.Errorf("customer ID in URL does not match customer ID in JWT token")
+			// verify user permissions
+			isAuthorized := service.rolePermissions.IsAuthorizedFor(userClaims.Role, urlParams["routeName"])
+			if !isAuthorized {
+				userUnauthorizedError := fmt.Errorf("user does not have permission to access this route")
 				fmt.Println(userUnauthorizedError)
 				return false, userUnauthorizedError
+			} else {
+
+				if userClaims.Role == "user" {
+					if urlParams["customer_id"] == userClaims.CustomerId {
+						return true, nil
+					} else {
+						userUnauthorizedError := fmt.Errorf("customer ID in URL does not match customer ID in JWT token")
+						fmt.Println(userUnauthorizedError)
+						return false, userUnauthorizedError
+					}
+				}
+				return true, nil
 			}
 		}
 	}
@@ -83,6 +100,6 @@ func jwtTokenFromString(tokenString string) (*jwt.Token, error) {
 	return token, nil
 }
 
-func NewAuthService(repo domain.AuthRepository) AuthServiceImpl {
-	return AuthServiceImpl{repo}
+func NewAuthService(repo domain.AuthRepository, permissions domain.RolePermissions) AuthServiceImpl {
+	return AuthServiceImpl{repo, permissions}
 }

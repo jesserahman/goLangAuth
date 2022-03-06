@@ -32,7 +32,7 @@ func Run() {
 	sanityCheck()
 	dbClient := getDbClient()
 
-	authHandler := AuthHandler{service.NewAuthService(domain.NewAuthRepositoryDbConnection(dbClient))}
+	authHandler := AuthHandler{service.NewAuthService(domain.NewAuthRepositoryDbConnection(dbClient), domain.GetRolePermissions())}
 	registerHandler := RegisterHandler{service.NewRegisterService(domain.NewRegisterRepositoryDbConnection(dbClient))}
 
 	router := mux2.NewRouter()

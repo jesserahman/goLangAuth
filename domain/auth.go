@@ -1,11 +1,12 @@
 package domain
 
 import (
-	"github.com/golang-jwt/jwt"
 	"goLangAuth/dto"
 	"goLangAuth/errs"
 	"strings"
 	"time"
+
+	"github.com/golang-jwt/jwt"
 )
 
 type User struct {

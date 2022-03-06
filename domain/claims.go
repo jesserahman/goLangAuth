@@ -2,6 +2,7 @@ package domain
 
 import (
 	"encoding/json"
+
 	"github.com/golang-jwt/jwt"
 )
 
