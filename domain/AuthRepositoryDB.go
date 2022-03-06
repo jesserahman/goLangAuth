@@ -15,7 +15,7 @@ type AuthRepositoryDb struct {
 }
 
 func (a AuthRepositoryDb) CheckCredentials(request dto.NewAuthRequest) (*User, *errs.AppError) {
-	var authQuery = fmt.Sprintf("select username, u.customer_id, role,  GROUP_CONCAT(a.account_id) as account_ids from users u LEFT JOIN accounts a ON a.customer_id = u.customer_id where username = '%s' and password = '%s'", request.Username, request.Password)
+	var authQuery = fmt.Sprintf("select username, u.customer_id, role,  GROUP_CONCAT(a.account_id) as account_ids from users u LEFT JOIN accounts a ON a.customer_id = u.customer_id where username = '%s' and password = '%s' group by a.customer_id ", request.Username, request.Password)
 
 	var resultUser User
 	err := a.dbClient.Get(&resultUser, authQuery)
