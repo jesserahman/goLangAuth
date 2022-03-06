@@ -2,9 +2,10 @@ package domain
 
 import (
 	"fmt"
-	"github.com/jmoiron/sqlx"
 	"goLangAuth/dto"
 	"goLangAuth/errs"
+
+	"github.com/jmoiron/sqlx"
 )
 
 type RegisterRepositoryDb struct {

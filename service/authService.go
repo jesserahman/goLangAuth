@@ -2,13 +2,14 @@ package service
 
 import (
 	"fmt"
-	"github.com/golang-jwt/jwt"
 	"goLangAuth/domain"
 	"goLangAuth/dto"
 	"goLangAuth/errs"
 	"log"
 	"os"
 	"time"
+
+	"github.com/golang-jwt/jwt"
 )
 
 type AuthService interface {
@@ -27,10 +28,11 @@ func (service AuthServiceImpl) VerifyCredentials(request dto.NewAuthRequest) (*s
 	}
 
 	var claims = jwt.MapClaims{
-		"customer_id": user.CustomerId,
-		"username":    user.Username,
-		"role":        user.Role,
-		"exp":         time.Now().Add(time.Hour).Unix(),
+		"username":        user.Username,
+		"customer_id":     user.CustomerId,
+		"role":            user.Role,
+		"account_numbers": user.AccountIDs,
+		"exp":             time.Now().Add(time.Hour).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

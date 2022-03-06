@@ -2,8 +2,6 @@ package app
 
 import (
 	"fmt"
-	mux2 "github.com/gorilla/mux"
-	"github.com/jmoiron/sqlx"
 	"goLangAuth/domain"
 	"goLangAuth/logger"
 	"goLangAuth/service"
@@ -11,6 +9,9 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	mux2 "github.com/gorilla/mux"
+	"github.com/jmoiron/sqlx"
 
 	"github.com/joho/godotenv"
 
