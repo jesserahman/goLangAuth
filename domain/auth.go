@@ -4,6 +4,7 @@ import (
 	"github.com/golang-jwt/jwt"
 	"goLangAuth/dto"
 	"goLangAuth/errs"
+	"strings"
 	"time"
 )
 
@@ -26,11 +27,17 @@ func (u User) GenerateAdminClaims() jwt.MapClaims {
 }
 
 func (u User) GenerateUserClaims() jwt.MapClaims {
+	var accountNumbers []string
+
+	if u.AccountIDs != nil {
+		accountNumbers = strings.Split(*u.AccountIDs, ",")
+	}
+
 	return jwt.MapClaims{
 		"username":        u.Username,
 		"customer_id":     u.CustomerId,
 		"role":            u.Role,
-		"account_numbers": u.AccountIDs,
+		"account_numbers": accountNumbers,
 		"exp":             time.Now().Add(time.Hour).Unix(),
 	}
 }

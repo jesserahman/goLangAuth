@@ -43,13 +43,28 @@ func (service AuthServiceImpl) VerifyCredentials(request dto.NewAuthRequest) (*s
 }
 
 func (service AuthServiceImpl) VerifyToken(urlParams map[string]string) (bool, error) {
-	// convert string token to JWT struct
+	// get Token from the URL and convert the string token to JWT struct
 	if jwtToken, err := jwtTokenFromString(urlParams["token"]); err != nil {
 		return false, err
 	} else {
 		//	check the validity of the token: expiration time & signature
 		if jwtToken.Valid {
-			return true, nil
+			mapClaims := jwtToken.Claims.(jwt.MapClaims)
+
+			// convert map to Claim struct - Claims contains all the user info that was sent in the token
+			userClaims, claimsErr := domain.BuildClaimsFromMap(mapClaims)
+			if claimsErr != nil {
+				fmt.Println("error: ", err.Error())
+				return false, err
+			}
+
+			if urlParams["customer_id"] == userClaims.CustomerId {
+				return true, nil
+			} else {
+				userUnauthorizedError := fmt.Errorf("customer ID in URL does not match customer ID in JWT token")
+				fmt.Println(userUnauthorizedError)
+				return false, userUnauthorizedError
+			}
 		}
 	}
 

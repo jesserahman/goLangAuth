@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+	"fmt"
 	"goLangAuth/dto"
 	"goLangAuth/service"
 	"net/http"
@@ -35,6 +36,7 @@ func (handler *AuthHandler) handleVerify(w http.ResponseWriter, r *http.Request)
 		urlParams[k] = r.URL.Query().Get(k)
 	}
 
+	fmt.Println("Url params: ", urlParams)
 	if urlParams["token"] != "" {
 		isAuthorized, appError := handler.service.VerifyToken(urlParams)
 		if appError != nil {
