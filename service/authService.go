@@ -34,8 +34,10 @@ func (service AuthServiceImpl) VerifyCredentials(request dto.NewAuthRequest) (*s
 		claims = user.GenerateUserClaims()
 	}
 
+	// newWithClaims takes the signing method in this case it's HS256 and then generates the token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
+	// sign the token with the secret
 	signedTokenAsString, signStringErr := token.SignedString([]byte(os.Getenv("HMAC_SAMPLE_SECRET")))
 	if signStringErr != nil {
 		fmt.Println("error signing token")
