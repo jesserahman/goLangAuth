@@ -1,4 +1,4 @@
-module goLangAuth
+module github.com/jesserahman/goLangAuth
 
 go 1.16
 
