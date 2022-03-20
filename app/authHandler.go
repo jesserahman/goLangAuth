@@ -2,8 +2,8 @@ package app
 
 import (
 	"encoding/json"
-	"goLangAuth/dto"
-	"goLangAuth/service"
+	"github.com/jesserahman/goLangAuth/dto"
+	"github.com/jesserahman/goLangAuth/service"
 	"net/http"
 )
 

@@ -2,9 +2,9 @@ package app
 
 import (
 	"fmt"
-	"goLangAuth/domain"
-	"goLangAuth/logger"
-	"goLangAuth/service"
+	"github.com/jesserahman/goLangAuth/domain"
+	"github.com/jesserahman/goLangAuth/logger"
+	"github.com/jesserahman/goLangAuth/service"
 	"log"
 	"net/http"
 	"os"

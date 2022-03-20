@@ -3,9 +3,9 @@ package domain
 import (
 	"database/sql"
 	"fmt"
-	"goLangAuth/dto"
-	"goLangAuth/errs"
-	"goLangAuth/logger"
+	"github.com/jesserahman/goLangAuth/dto"
+	"github.com/jesserahman/goLangAuth/errs"
+	"github.com/jesserahman/goLangAuth/logger"
 
 	"github.com/jmoiron/sqlx"
 )

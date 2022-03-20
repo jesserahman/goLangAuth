@@ -2,9 +2,9 @@ package service
 
 import (
 	"fmt"
-	"goLangAuth/domain"
-	"goLangAuth/dto"
-	"goLangAuth/errs"
+	"github.com/jesserahman/goLangAuth/domain"
+	"github.com/jesserahman/goLangAuth/dto"
+	"github.com/jesserahman/goLangAuth/errs"
 	"log"
 	"os"
 

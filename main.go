@@ -1,8 +1,8 @@
 package main
 
 import (
-	"goLangAuth/app"
-	"goLangAuth/logger"
+	"github.com/jesserahman/goLangAuth/app"
+	"github.com/jesserahman/goLangAuth/logger"
 )
 
 func main() {

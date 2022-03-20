@@ -2,8 +2,8 @@ package domain
 
 import (
 	"fmt"
-	"goLangAuth/dto"
-	"goLangAuth/errs"
+	"github.com/jesserahman/goLangAuth/dto"
+	"github.com/jesserahman/goLangAuth/errs"
 
 	"github.com/jmoiron/sqlx"
 )

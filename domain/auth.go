@@ -1,8 +1,8 @@
 package domain
 
 import (
-	"goLangAuth/dto"
-	"goLangAuth/errs"
+	"github.com/jesserahman/goLangAuth/dto"
+	"github.com/jesserahman/goLangAuth/errs"
 	"strings"
 	"time"
 
