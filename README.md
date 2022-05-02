@@ -29,7 +29,7 @@ POST /customer
 #### How Bearer tokens work within this project
 
 ##### The Login endpoint
-- User hits the `/login` endpoint with a username and password
+- User hits the `/auth/login` endpoint with a username and password
 - Login handler gets called, which then calls the `VerifyCreditials()` method of the AuthService Interface
 - `VerifiyCredentials()` calls the `CheckCredentials()` method of the `AuthRepository` Interface 
 - `CheckCredentials()` queries the DB to get the `username`, `customer_id`, `role`, and list of `account_ids` (if any) for the user (assuming the username and password is correct) and returns the user.
