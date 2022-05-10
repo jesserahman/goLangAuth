@@ -13,8 +13,6 @@ import (
 	mux2 "github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 
-	"github.com/joho/godotenv"
-
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -25,10 +23,6 @@ func sanityCheck() {
 }
 
 func Run() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 	sanityCheck()
 	dbClient := getDbClient()
 
@@ -42,7 +36,7 @@ func Run() {
 
 	port := os.Getenv("SERVER_PORT")
 
-	err = http.ListenAndServe(fmt.Sprintf(":%s", port), router)
+	err := http.ListenAndServe(fmt.Sprintf(":%s", port), router)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
